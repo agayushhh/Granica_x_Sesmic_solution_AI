@@ -17,3 +17,11 @@ def peterson(table, T):
         m = (T >= t0) & (T < t1)
         out[m] = A + B * np.log10(T[m])
     return out
+
+
+def detect_fraction(minutes, phones=1, seg_s=10.0, k=2.0):
+    """Weakest ground signal that stands out, as a fraction of one phone's hiss (amplitude).
+    Averaging M independent 10 s spectra steadies the hiss estimate by 1/sqrt(M), so ground power
+    of k/sqrt(M) times the hiss power becomes visible; stacking N phones side by side lowers the hiss
+    itself by 1/sqrt(N). Conservative: no averaging across neighbouring frequencies."""
+    return (k / (minutes * 60 / seg_s) ** 0.5) ** 0.5 / phones ** 0.5

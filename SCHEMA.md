@@ -90,4 +90,4 @@ There are three zips per spot, exactly as phyphox saved them. The file names wer
 
 **`outputs/insights.json`**: the key numbers quoted in the slides (gap between the hiss and natural ground, classifier scores, vibration upper bounds, counts).
 
-**`outputs/figures/`**: 12 charts, numbered in the order they appear in the story.
+**`outputs/figures/`**: 13 charts, numbered in the order they appear in the story.

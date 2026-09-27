@@ -50,6 +50,13 @@
       "barak_umium": 0.4
     }
   },
+  "detection_projection": {
+    "fraction_of_hiss_today_1phone": 0.67,
+    "fraction_30min_1phone": 0.39,
+    "fraction_120min_1phone": 0.27,
+    "fraction_120min_4phones": 0.14,
+    "noisiest_natural_ground_fraction": 0.026
+  },
   "n_sites": 5,
   "n_recordings": 15,
   "n_accel_samples": 100212,

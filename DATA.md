@@ -32,7 +32,7 @@ Everything you need to understand and trust the dataset, without us in the room.
 |---|---|---|
 | **Observed** (measured by the phone) | Three-direction acceleration, GPS fixes, tilt angles, recording start and stop times, device details | `data/raw/`, `data/sample/`, `data/processed/` |
 | **Provided by us** (human input) | A plain-English description of each spot and a rough ground-type label. The labels are our best guess, not surveyed | `sites_manifest.csv` |
-| **Inferred** (calculated from the observations) | Which 20-second pieces were clean, the sideways-to-up-down curves, the candidate rhythm and strength, the nine SESAME rulebook checks, the hiss check and verdict, the vibration upper bounds, and the AI classifier result | `outputs/summary.csv`, `outputs/insights.json`, `outputs/figures/` |
+| **Inferred** (calculated from the observations) | Which 20-second pieces were clean, the sideways-to-up-down curves, the candidate rhythm and strength, the nine SESAME rulebook checks, the hiss check and verdict, the vibration upper bounds, the AI classifier result, and the longer-recording projection (figure 13) | `outputs/summary.csv`, `outputs/insights.json`, `outputs/figures/` |
 | **Synthetic** | **None.** The only random numbers are inside the code's self-test (`--selfcheck`), which is never saved or plotted | n/a |
 
 ## How AI was used
@@ -58,7 +58,7 @@ Everything you need to understand and trust the dataset, without us in the room.
 
 ## Known gaps and biases
 
-- **The phone's hiss is the main limit.** It is 38–696 times stronger than natural ground trembling between 0.5 and 10 vibrations per second, so no ground rhythm can be measured. Longer recordings would not fix this; a quieter sensor would.
+- **The phone's hiss is the main limit for this first round.** In 3½-minute night recordings it is 38–696 times stronger than natural ground trembling between 0.5 and 10 vibrations per second, so no ground rhythm could be measured yet. Longer and multi-phone recordings make the hiss steadier and lower, letting fainter signals show: a projection from our measured noise gives about 0.39× the hiss for 30 minutes with one phone, and 0.14× for 2 hours with four phones side by side (figure 13). That could reach busier or softer spots at the faster rhythms. The quietest ground at slow rhythms still needs a proper sensor.
 - Recordings are 3–3½ minutes, shorter than the 10–15 minutes the guidelines suggest.
 - One phone, one evening, five spots, one visit each: no daytime, weekday or seasonal comparison.
 - The hiss level was estimated from these same recordings, not from a separate test with the phone on a still surface indoors.

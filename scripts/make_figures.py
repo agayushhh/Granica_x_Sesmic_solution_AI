@@ -22,7 +22,7 @@ from scipy.signal import welch, spectrogram, detrend
 sys.path.insert(0, os.path.dirname(__file__))
 import hvsr_pipeline as hp
 from basemap import fetch_osm
-from noise_models import NLNM, NHNM, peterson
+from noise_models import NLNM, NHNM, peterson, detect_fraction
 
 FIG = "outputs/figures"
 os.makedirs(FIG, exist_ok=True)
@@ -476,6 +476,42 @@ caption(fig, f"Logistic regression on per-axis log-PSD in 14 bands; {len(y)} qui
              "blocks (no temporal leakage).\nIf ground resonance differed between sites, the 0.8–8 Hz band should still identify them. "
              "Only Barak–Umiam (machinery above 15 Hz) is recognisable.", y=-0.1)
 save(fig, "12_site_fingerprint_classifier.png")
+
+# ---- 13 how far longer / multi-phone recordings can go (projection) -----------------------------
+mins = np.logspace(np.log10(3), np.log10(180), 120)
+I_gap = insights["floor_gap_amplitude_x"][0]
+noisiest = 1 / I_gap
+fig, ax = plt.subplots(figsize=(10, 5))
+for n, col in ((1, "#eb6834"), (2, "#2a78d6"), (4, "#1baf7a")):
+    ax.plot(mins, [detect_fraction(m, n) for m in mins], color=col, lw=2,
+            label="1 phone on its own" if n == 1 else f"{n} phones side by side")
+today = detect_fraction(S.duration_s.mean() / 60)
+ax.scatter([S.duration_s.mean() / 60], [today], s=70, color=INK, zorder=5)
+ax.annotate(f"our recordings ({S.duration_s.mean() / 60:.1f} min, one phone)", (S.duration_s.mean() / 60, today),
+            xytext=(12, 8), textcoords="offset points", fontsize=10, color=INK)
+ax.axhline(noisiest, color=CRIT, lw=1.2)
+ax.text(3.2, noisiest * 1.12, f"noisiest natural ground at ~10 Hz (Peterson NHNM): 1/{I_gap} of the phone's hiss",
+        fontsize=9.5, color=CRIT)
+ax.fill_between(mins, noisiest, [detect_fraction(m, 4) for m in mins], color=WARN, alpha=0.12, lw=0)
+ax.text(40, noisiest * 2.1, "busy daytime or soft-soil sites may sit here:\na 30-minute two-phone test will tell",
+        fontsize=9.5, color=INK2, ha="center")
+ax.set(xscale="log", yscale="log", xlim=(3, 180), ylim=(noisiest / 2, 1.2),
+       xlabel="recording length at one spot (minutes)", ylabel="weakest ground signal detectable\n(fraction of one phone's hiss)")
+ax.set_xticks([3.5, 10, 30, 60, 120], ["3.5", "10", "30", "60", "120"])
+ax.set_yticks([1, 0.5, 0.25, 0.1, 0.05], ["1", "1/2", "1/4", "1/10", "1/20"])
+ax.minorticks_off()
+ax.legend(loc="upper right", fontsize=9)
+ax.set_title("How far longer, multi-phone recordings can go (a projection from our measured phone noise)")
+caption(fig, "Calculated, not measured: 10-second pieces, 2-sigma detection, no averaging across frequencies (conservative). "
+             "Assumes the phone's hiss is known from a still indoor test.")
+save(fig, "13_detection_vs_recording_length.png")
+insights["detection_projection"] = {
+    "fraction_of_hiss_today_1phone": round(today, 2),
+    "fraction_30min_1phone": round(detect_fraction(30), 2),
+    "fraction_120min_1phone": round(detect_fraction(120), 2),
+    "fraction_120min_4phones": round(detect_fraction(120, 4), 2),
+    "noisiest_natural_ground_fraction": round(noisiest, 3),
+}
 
 # ---- key numbers -----------------------------------------------------------------------------
 insights.update({
