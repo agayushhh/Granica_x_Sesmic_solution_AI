@@ -1,0 +1,6 @@
+location_id,description,zone_label,notes
+old_sac,"Open ground near the Old SAC (Student Activity Centre)",plain,"PROVISIONAL zone label - confirm with field team"
+kv_gate,"Ground near the Kendriya Vidyalaya (KV) gate",plain,"PROVISIONAL zone label - confirm with field team; phone tilt 5.5 deg (above 5 deg QC limit)"
+core_4,"Academic complex, near Core 4",plain,"PROVISIONAL zone label - confirm; heavy transient activity during recording"
+lecture_hall_lake,"Beside the lake next to the Lecture Hall complex",lake_adjacent,"PROVISIONAL zone label - hypothesised soft ground; short high-frequency bursts at ~130-150 s (passer-by or vehicle)"
+barak_umium,"Open ground between Barak and Umiam hostels",hostel,"GPS network fallback only (~100 m)"

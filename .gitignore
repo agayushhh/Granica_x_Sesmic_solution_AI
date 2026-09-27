@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+data/processed/
+outputs/windows.*
+outputs/*.parquet
+outputs/*_hvsr.png
